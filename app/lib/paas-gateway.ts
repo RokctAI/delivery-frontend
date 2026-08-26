@@ -22,7 +22,7 @@
 
 import "server-only";
 
-import { getCurrentSession } from "@/app/(auth)/actions";
+import { getCurrentSession } from "@/app/lib/session";
 import { platformCall } from "@/app/services/base/platform-gateway";
 
 /**

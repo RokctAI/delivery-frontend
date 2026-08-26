@@ -22,10 +22,9 @@
 
 import "server-only";
 
-import { getCurrentSession } from "@/app/(auth)/actions";
+import { getCurrentSession } from "@/app/lib/session";
 import { getFrappeClient } from "@/lib/frappe";
-import { db } from "@/db";
-import { globalSettings } from "@/db/schema";
+import { GlobalSettingsService } from "@/app/services/control/global_settings";
 
 export async function getPaaSClient() {
   const session = await getCurrentSession();
@@ -73,13 +72,15 @@ export async function getSystemControlClient() {
   let apiSecret: string | undefined;
 
   try {
-    const settings = await db.select().from(globalSettings).limit(1);
-    if (settings.length > 0) {
-      apiKey = settings[0].adminApiKey || undefined;
-      apiSecret = settings[0].adminApiSecret || undefined;
-    }
+    // Admin keys live in the GlobalSettings store, which the auth_sdk's
+    // drizzle-backed GlobalSettingsService provides when composed; the bare
+    // shell's neutral seam never carries keys, so this client stays
+    // uninitialized there.
+    const settings = await GlobalSettingsService.getGlobalSettings();
+    apiKey = settings?.adminApiKey || undefined;
+    apiSecret = settings?.adminApiSecret || undefined;
   } catch (e) {
-    console.error("Failed to fetch System Keys from DB", e);
+    console.error("Failed to fetch System Keys from settings store", e);
   }
 
   if (!apiKey || !apiSecret) {

@@ -20,36 +20,23 @@
  * SOFTWARE.
  */
 
-import { config } from "dotenv";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
-import postgres from "postgres";
+import "server-only";
 
-config({
-  path: ".env",
-});
+// Neutral bare-shell session seam. The shell commits no auth surface (Ray's
+// ruling on PR #4: auth belongs to the users repo's auth_sdk Next.js half),
+// so with no way to establish a session both functions resolve to null —
+// every session-gated shell code path (app/lib/client.ts, app/lib/roles.ts,
+// app/lib/paas-gateway.ts, app/(chat)/page.tsx) takes its unauthenticated
+// branch. Composing auth_sdk overwrites this file with the NextAuth-backed
+// implementation; shell code imports ONLY this seam, never
+// "@/app/(auth)/..." directly, so the shell builds identically either way.
 
-const runMigrate = async () => {
-  const connectionString =
-    process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL;
-  if (!connectionString) {
-    throw new Error("POSTGRES_URL is not defined");
-  }
-  const connection = postgres(connectionString, { max: 1 });
-  const db = drizzle(connection);
+/** The current session, or null. Bare shell: always null (no auth surface). */
+export async function auth(): Promise<any> {
+  return null;
+}
 
-  console.log("⏳ Running migrations...");
-
-  const start = Date.now();
-  await migrate(db, { migrationsFolder: "./lib/drizzle" });
-  const end = Date.now();
-
-  console.log("✅ Migrations completed in", end - start, "ms");
-  process.exit(0);
-};
-
-runMigrate().catch((err) => {
-  console.error("❌ Migration failed");
-  console.error(err);
-  process.exit(1);
-});
+/** Alias kept for call sites that read as "session" rather than "auth". */
+export async function getCurrentSession(): Promise<any> {
+  return null;
+}

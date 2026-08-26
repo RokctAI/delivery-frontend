@@ -22,7 +22,7 @@
 
 "use server";
 
-import { auth } from "@/app/(auth)/auth";
+import { auth } from "@/app/lib/session";
 import { getClient } from "@/app/lib/client";
 import { gatewayCall } from "@/app/lib/gateway-rpc";
 

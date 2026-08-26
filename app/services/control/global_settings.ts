@@ -20,64 +20,45 @@
  * SOFTWARE.
  */
 
-import { db } from "@/db";
-import { globalSettings } from "@/db/schema";
-import { eq } from "drizzle-orm";
+// Neutral bare-shell GlobalSettings seam. The drizzle/Postgres store these
+// settings live in belongs to the auth surface (its rows — admin API keys,
+// beta/debug flags — are written by the admin login flow), which Ray's
+// ruling on PR #4 moved to the users repo's auth_sdk Next.js half. The bare
+// shell therefore has no persistence: reads return safe defaults and
+// toggles report failure. Composing auth_sdk overwrites this file with the
+// drizzle-backed implementation (same class name, same method contracts).
+
+/** Shape of the settings record both the seam and the drizzle-backed
+ *  auth_sdk implementation resolve to. Admin key fields are only ever
+ *  populated by the auth_sdk copy (they live in its Postgres store). */
+export type GlobalSettingsRecord = {
+  id?: string;
+  isBetaMode: boolean;
+  isDebugMode: boolean;
+  adminApiKey?: string | null;
+  adminApiSecret?: string | null;
+  platformSyncSecret?: string | null;
+};
 
 export class GlobalSettingsService {
-  static async getGlobalSettings() {
-    try {
-      const settings = await db.select().from(globalSettings).limit(1);
-      if (settings.length === 0) {
-        const newSettings = await db
-          .insert(globalSettings)
-          .values({
-            isBetaMode: true,
-            isDebugMode: false,
-          })
-          .returning();
-        return newSettings[0];
-      }
-      return settings[0];
-    } catch (error) {
-      console.error("Failed to fetch global settings:", error);
-      return { isBetaMode: true, isDebugMode: false };
-    }
+  static async getGlobalSettings(): Promise<GlobalSettingsRecord> {
+    // No store in the bare shell — mirror the drizzle copy's catch-branch
+    // defaults so callers (branding, handson system settings) behave the
+    // same as when the composed copy cannot reach Postgres.
+    return { isBetaMode: true, isDebugMode: false };
   }
 
-  static async toggleBetaMode() {
-    try {
-      const settings = await this.getGlobalSettings();
-      if (settings && "id" in settings && settings.id) {
-        await db
-          .update(globalSettings)
-          .set({ isBetaMode: !settings.isBetaMode })
-          .where(eq(globalSettings.id, settings.id));
-
-        return { success: true, isBetaMode: !settings.isBetaMode };
-      }
-      return { success: false };
-    } catch (error) {
-      console.error("Failed to toggle beta mode:", error);
-      return { success: false };
-    }
+  static async toggleBetaMode(): Promise<{
+    success: boolean;
+    isBetaMode?: boolean;
+  }> {
+    return { success: false };
   }
 
-  static async toggleDebugMode() {
-    try {
-      const settings = await this.getGlobalSettings();
-      if (settings && "id" in settings && settings.id) {
-        await db
-          .update(globalSettings)
-          .set({ isDebugMode: !settings.isDebugMode })
-          .where(eq(globalSettings.id, settings.id));
-
-        return { success: true, isDebugMode: !settings.isDebugMode };
-      }
-      return { success: false };
-    } catch (error) {
-      console.error("Failed to toggle debug mode:", error);
-      return { success: false };
-    }
+  static async toggleDebugMode(): Promise<{
+    success: boolean;
+    isDebugMode?: boolean;
+  }> {
+    return { success: false };
   }
 }

@@ -22,35 +22,25 @@
 
 import { redirect } from "next/navigation";
 
-import { getCurrentSession } from "@/app/(auth)/actions";
-import { PaaSLogin } from "@/components/custom/paas-login";
+import { getCurrentSession } from "@/app/lib/session";
 
-// Bare-shell root route. The chat surface lives in the agent SDK; when that
-// SDK is composed in, its installer overwrites this file with the full chat
-// home (and its manifest flips AI_FIRST via the compose-flags marker). Keep
-// this file at app/(chat)/page.tsx — moving it to app/page.tsx would collide
-// with the SDK-installed copy at compose time (two "/" routes).
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
+// Neutral bare-shell root route. The shell commits no auth surface (Ray's
+// ruling on PR #4: auth belongs to the users repo's auth_sdk Next.js half),
+// so the seam session is always null here and every visitor lands on
+// /landing. Composing auth_sdk overwrites this file with the session-aware
+// copy (PaaSLogin for ?site_name visitors, dashboard redirect for
+// authenticated sessions); a future agent SDK that owns the chat home
+// overwrites it again and must absorb that auth behavior. Keep this file at
+// app/(chat)/page.tsx — moving it to app/page.tsx would collide with the
+// SDK-installed copy at compose time (two "/" routes).
+export default async function Page() {
   const session = await getCurrentSession();
 
   if (!session || !session.user) {
-    const params = await searchParams;
-    const siteName = params?.site_name;
-
-    if (!siteName) {
-      redirect("/landing");
-    }
-
-    return <PaaSLogin />;
+    redirect("/landing");
   }
 
-  // This shell is 100% paas: every authenticated session is a PaaS session,
-  // and auth.config.ts normally redirects it before this page renders. As a
-  // fallback, land on the merchant dashboard (there is no /handson surface in
-  // this shell).
+  // Unreachable bare (the seam never authenticates); kept so the composed
+  // fallback semantics stay documented next to the code they belong to.
   redirect("/paas/dashboard");
 }

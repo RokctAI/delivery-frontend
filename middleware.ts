@@ -20,19 +20,17 @@
  * SOFTWARE.
  */
 
-import NextAuth from "next-auth";
+import { NextResponse } from "next/server";
 
-import { authConfig } from "@/app/(auth)/auth.config";
+// Neutral bare-shell middleware (auth seam). The shell commits no auth
+// surface (Ray's ruling on PR #4: auth belongs to the users repo's auth_sdk
+// Next.js half), so this middleware gates nothing and lets every request
+// through. Composing auth_sdk overwrites this file with the NextAuth-backed
+// middleware (auth.config.ts's authorized() callback) that owns login
+// redirects and route protection.
+export default function middleware() {
+  return NextResponse.next();
+}
 
-export default NextAuth(authConfig).auth;
-
-export const config = {
-  matcher: [
-    "/",
-    "/:id",
-    "/api/:path*",
-    "/login",
-    "/register",
-    "/handson/:path*",
-  ],
-};
+// No `config.matcher` on purpose: the pass-through runs (and does nothing)
+// everywhere. auth_sdk's copy declares its own matcher list.
