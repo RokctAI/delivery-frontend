@@ -11,3 +11,19 @@ build/
 # Protocol working state — installed by .rokct/initiate.py, not committed.
 .rokct/skills/
 .rokct/tmp/
+
+# Next.js
+.next/
+out/
+.turbo
+.vercel
+next-env.d.ts.bak
+tsconfig.tsbuildinfo
+.env.local
+.env*.local
+!.env.example
+npm-debug.log*
+
+# SDK compose working state — vendored SDK caches are not committed.
+.rokct/cache/
+.rokct/agent/logs/
