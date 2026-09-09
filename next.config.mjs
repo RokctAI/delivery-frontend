@@ -21,15 +21,8 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-
-  async rewrites() {
-    return [
-      {
-        source: "/favicon.ico",
-        destination: "/images/logo.svg",
-      },
-    ];
-  },
+  // No favicon rewrite: the tab icon is base_sdk's generated /brand-icon
+  // letter tile, drawn from delivery_sdk's registered site metadata.
 };
 
 export default nextConfig;
