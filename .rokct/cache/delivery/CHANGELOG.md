@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.0.1
+
+* The header shows the wordmark only. Ray, 2026-09-09: "i saw supacharge
+  got a s logo in header, let home sdk declare if it needs logo there or
+  not. supacharge text is the logo right now until i design an icon". The
+  image beside the wordmark was the host shell's own
+  `components/custom/brand-logo.tsx`, an asset-free placeholder that draws
+  the platform's first letter on a dark square, which base_sdk's header
+  rendered because nothing told it not to; juvo has no icon yet.
+  * `components/custom/landing/delivery-header-menu.ts` declares
+    `brand: { logo: "none" }` (base_sdk >= 1.21.0's `HeaderMenu.brand`, the
+    declaration lms_sdk 1.13.0 makes): no image in the brand slot, the
+    wordmark (`branding.tsx`) alone. Nothing else about the menu changes.
+    When an icon is designed, the declaration becomes its path.
+  * `manifest.json` names the floor: base_sdk >= 1.21.0, and
+    `components/custom/landing/header-menu.ts` in `requires` at the same
+    floor. Against 1.14.0-1.20.0 the field is a type error in the
+    registry's `HeaderMenu`.
+  * This changelog's 1.0.0 entry wraps its bare `juvo.app` URL in angle
+    brackets (markdownlint MD034); the words are unchanged.
+
 ## 1.0.0
 
 * First release: the Next.js half of the delivery product, the home SDK of
@@ -75,7 +96,7 @@
     juvo so i will point juvo.app to it" - `delivery-site-metadata.ts`
     names the site "juvo", exactly as he wrote it (no wordmark, no
     capitalisation invented; paas_customer's own README already titles the
-    customer app "Juvo"), and sets `url` to https://juvo.app so base's
+    customer app "Juvo"), and sets `url` to <https://juvo.app> so base's
     canonical and social-card URLs resolve there. The title leads with it.
     Nothing else on the page spelled a brand.
   * The apps section, `delivery-apps-section.tsx` (`meta.order` 50, nav
