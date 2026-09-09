@@ -6,7 +6,8 @@ point juvo.app to it"): the storefront that sells the platform and shows off
 the three apps (customer, manager, driver), and the door to the tenant portal
 a tenant's own domain opens.
 
-Spawned by [RokctAI Factory](https://github.com/rokctai/factory) from https://github.com/RokctAI/factory/issues/129.
+Spawned by [RokctAI Factory](https://github.com/rokctai/factory) from
+<https://github.com/RokctAI/factory/issues/129>.
 
 ## Status
 
@@ -135,10 +136,16 @@ one.
 
 `scripts/compose.sh` has two modes:
 
-| mode | who runs it | what it does |
-| --- | --- | --- |
-| `bash scripts/compose.sh` | Vercel, CI, developers | Verifies the vendored composer and every cache entry against `.rokct/lock.json`, then runs each cached SDK's `install.py`. Offline: no git, no network, no token. |
-| `bash scripts/compose.sh refresh` | a maintainer, or Actions with `MONOREPO_PAT` | Re-fetches the protocol composer and every SDK the registry template names, replaces `.rokct/cache/` wholesale, rewrites `.rokct/lock.json` (every SDK's pins and its `home_sdk` flag), the composed-output block in `.gitignore` and `package-lock.json`, and stages the cache. Commit the result to `main`; that commit is what ships the new SDK version. |
+- `bash scripts/compose.sh` — Vercel, CI and developers. Verifies the
+  vendored composer and every cache entry against `.rokct/lock.json`, then
+  runs each cached SDK's `install.py`. Offline: no git, no network, no token.
+- `bash scripts/compose.sh refresh` — a maintainer, or Actions with
+  `MONOREPO_PAT`. Re-fetches the protocol composer and every SDK the registry
+  template names, replaces `.rokct/cache/` wholesale, rewrites
+  `.rokct/lock.json` (every SDK's pins and its `home_sdk` flag), the
+  composed-output block in `.gitignore` and `package-lock.json`, and stages
+  the cache. Commit the result to `main`; that commit is what ships the new
+  SDK version.
 
 The cache is listed in `.gitignore` and committed with `git add -f`. The
 ignore rule is there for one reason: the fleet linter's auto-fix runs
