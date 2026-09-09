@@ -5,10 +5,11 @@ else. Your job is to turn the brief into a working application.
 
 ## What this is
 
-**delivery-frontend** — Frontend shell for the delivery platform product, which PaaS folds into.
+**delivery-frontend** — Frontend shell for the delivery platform product,
+which PaaS folds into.
 
 Repo: `RokctAI/delivery-frontend` (public)
-Accepted from: https://github.com/RokctAI/factory/issues/129
+Accepted from: <https://github.com/RokctAI/factory/issues/129>
 
 ## Read first
 
