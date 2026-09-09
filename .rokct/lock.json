@@ -67,10 +67,10 @@
       "git": "https://github.com/RokctAI/zones",
       "path": "../zones/delivery/nextjs",
       "ref": "main",
-      "commit": "ec328fc0051766535113b540915d3675bef6a738",
-      "version": "1.0.0",
+      "commit": "d9030137390e08f4f0079f379a11190699ec7821",
+      "version": "1.0.1",
       "install_py_sha256": "8ca4ef31c258f0ac3fca917f875522a5714cbcb410bf5a803cf5a648e2d3caed",
-      "content_sha256": "a636cbfa7709abd374d376a172512b7a60ae6473c95040fa998de0c12a8dabfb"
+      "content_sha256": "1788c69014bd5f484921a006f8a89dc6093238f77ed7f4eb93db03b23a4d2add"
     }
   ]
 }
