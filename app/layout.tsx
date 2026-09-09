@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 
-import { Metadata } from "next";
 import React from "react";
 import { Toaster } from "sonner";
 import localFont from "next/font/local";
@@ -28,13 +27,13 @@ import localFont from "next/font/local";
 // Seeded for the deliveryplatform shell from rokctai_frontend's root layout.
 // The AI-chat chrome (AiProvider, VisitorTracker, marketing Navbar/Footer) is
 // not part of this shell and was trimmed out; product surfaces arrive via
-// composed SDKs under app/paas/**.
+// composed SDKs (base_sdk's /landing, /admin and /manager, auth_sdk's
+// /login and /register, delivery_sdk's / and the storefront sections).
+import { buildSiteMetadata } from "@/app/lib/site-metadata";
 import { SessionProvider } from "@/components/custom/session-provider";
 import { ThemeProvider } from "@/components/custom/theme-provider";
 
 import "./globals.css";
-
-import { PLATFORM_NAME } from "@/app/config/constants";
 
 const geistSans = localFont({
   src: "../public/fonts/geist.woff2",
@@ -48,15 +47,14 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: PLATFORM_NAME,
-  description: `Delivery platform frontend shell, powered by ${PLATFORM_NAME}.`,
-  icons: {
-    icon: "/images/logo.svg",
-    shortcut: "/images/logo.svg",
-    apple: "/images/logo.svg",
-  },
-};
+// The <title>, description, Open Graph and Twitter cards, the generated
+// 1200x630 preview and the favicon all come from the copy the home SDK
+// (delivery_sdk) registered at components/custom/landing/site-metadata.ts,
+// through base_sdk's composed app/lib/site-metadata.ts. Nothing is overridden
+// here: no product copy lives in this file, and the canonical origin is
+// NEXT_PUBLIC_SITE_URL when the deployment sets one (https://juvo.app), else
+// the copy's own url.
+export const generateMetadata = () => buildSiteMetadata();
 
 export default async function RootLayout({
   children,

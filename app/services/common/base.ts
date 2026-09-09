@@ -40,7 +40,7 @@ export class BaseService {
     options: ServiceOptions = {},
   ) {
     const client = await getClient();
-    return gatewayCall(client, method, args, options.headers);
+    return gatewayCall(client.app, method, args, options.headers);
   }
 
   public static async getList(

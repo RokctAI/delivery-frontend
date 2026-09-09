@@ -36,7 +36,7 @@ export async function getCurrentEmployeeId() {
 
   const client = await getClient();
   try {
-    const response = await gatewayCall(client, "frappe.client.get_value", {
+    const response = await gatewayCall(client.app, "frappe.client.get_value", {
       doctype: "Employee",
       filters: { user_id: session.user.email },
       fieldname: "name",
@@ -70,7 +70,7 @@ export async function verifyActiveEmployee() {
 
   try {
     // 1. Get Employee ID
-    const empRes = await gatewayCall(client, "frappe.client.get_value", {
+    const empRes = await gatewayCall(client.app, "frappe.client.get_value", {
       doctype: "Employee",
       filters: { user_id: session.user.email },
       fieldname: "name",
@@ -79,7 +79,7 @@ export async function verifyActiveEmployee() {
     if (!employee) return true; // If no employee record, they might be admin/system user, so allow (or handle elsewhere)
 
     // 2. Check for Pending/Approved Separation (Resignation)
-    const separation = await gatewayCall(client, "frappe.client.get_list", {
+    const separation = await gatewayCall(client.app, "frappe.client.get_list", {
       doctype: "Employee Separation",
       filters: {
         employee: employee,
@@ -123,7 +123,7 @@ export async function verifyHrRole() {
   // For now, we allow access.
 
   try {
-    const roles = (await gatewayCall(client, "frappe.client.get_list", {
+    const roles = (await gatewayCall(client.app, "frappe.client.get_list", {
       doctype: "Has Role",
       filters: {
         parent: session.user.email,
@@ -154,7 +154,7 @@ export async function verifyCrmRole() {
   if (!session?.user?.email) return false;
 
   try {
-    const roles = (await gatewayCall(client, "frappe.client.get_list", {
+    const roles = (await gatewayCall(client.app, "frappe.client.get_list", {
       doctype: "Has Role",
       filters: {
         parent: session.user.email,
@@ -183,7 +183,7 @@ export async function verifySupplyChainRole() {
   if (!session?.user?.email) return false;
 
   try {
-    const roles = (await gatewayCall(client, "frappe.client.get_list", {
+    const roles = (await gatewayCall(client.app, "frappe.client.get_list", {
       doctype: "Has Role",
       filters: {
         parent: session.user.email,
@@ -213,7 +213,7 @@ export async function verifyFinanceRole() {
   if (!session?.user?.email) return false;
 
   try {
-    const roles = (await gatewayCall(client, "frappe.client.get_list", {
+    const roles = (await gatewayCall(client.app, "frappe.client.get_list", {
       doctype: "Has Role",
       filters: {
         parent: session.user.email,
@@ -242,7 +242,7 @@ export async function verifySystemManager() {
   if (!session?.user?.email) return false;
 
   try {
-    const roles = (await gatewayCall(client, "frappe.client.get_list", {
+    const roles = (await gatewayCall(client.app, "frappe.client.get_list", {
       doctype: "Has Role",
       filters: {
         parent: session.user.email,
@@ -296,7 +296,7 @@ export async function verifyLendingRole() {
 
   try {
     // 1. Check User Roles
-    const roles = (await gatewayCall(client, "frappe.client.get_list", {
+    const roles = (await gatewayCall(client.app, "frappe.client.get_list", {
       doctype: "Has Role",
       filters: {
         parent: session.user.email,
@@ -393,7 +393,7 @@ export async function verifyLmsRole() {
   if (!session?.user?.email) return false;
 
   try {
-    const roles = (await gatewayCall(client, "frappe.client.get_list", {
+    const roles = (await gatewayCall(client.app, "frappe.client.get_list", {
       doctype: "Has Role",
       filters: {
         parent: session.user.email,
