@@ -37,6 +37,12 @@ npm-debug.log*
 # tracked regardless of an ignore rule; the lock's content_sha256 fails the
 # build loudly if a cache entry is ever incomplete or edited.
 .rokct/cache/
+# The install record `scripts/compose.sh` writes on every compose: this
+# machine's own file digests, regenerated each run, never vendored. It sits
+# inside .rokct/cache/ which the refresh stages with `git add -f`, so it is
+# named here to keep that force-add from sweeping it into a commit - a
+# committed copy drifts on the very next compose and fails the zero-drift check.
+.rokct/cache/install_state.json
 .rokct/sdk_installer_base.py
 .rokct/agent/logs/
 
