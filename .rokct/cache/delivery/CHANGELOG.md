@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.1.1
+
+* The storefront hero no longer offers a call to action that goes nowhere.
+  `components/custom/landing/delivery-hero-form.tsx` draws "See pricing"
+  only when the pricing section is on the page, reading base_sdk 1.48.0's
+  `HeroFormProps.nav` - the page's live section list. The pricing section
+  already turns itself down when there are no plans to price
+  (`delivery-pricing-section.tsx` `meta.renders`), which is every render
+  while the platform's plan catalog cannot be read, and until now the
+  hero's PRIMARY button pointed at the `#pricing` anchor that the page then
+  did not have. With pricing off the page, "Log in to your portal" takes
+  the primary style, so the hero still leads somewhere that works. A host
+  that hands no `nav` over keeps the button exactly as before.
+
 ## 1.1.0
 
 * The tenant admin panel gains a Location types page: the kinds of place a
