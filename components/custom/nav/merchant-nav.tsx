@@ -23,20 +23,20 @@
 "use client";
 
 import {
-  ShoppingBag,
-  List,
-  Store,
-  Calendar,
-  Briefcase,
-  DollarSign,
-  Megaphone,
-  Layers,
-  Users,
-  BarChart3,
-  Settings,
-  ChevronRight,
-  Map,
-} from "lucide-react";
+  RiShoppingBagLine,
+  RiListUnordered,
+  RiStore2Line,
+  RiCalendarLine,
+  RiBriefcaseLine,
+  RiMoneyDollarCircleLine,
+  RiMegaphoneLine,
+  RiStackLine,
+  RiGroupLine,
+  RiBarChartBoxLine,
+  RiSettings3Line,
+  RiArrowRightSLine,
+  RiMapLine,
+} from "@remixicon/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import t from "@/app/lib/i18n";
@@ -60,7 +60,7 @@ import {
 const merchantMenuItems = [
   {
     title: t("nav.merchant.products"),
-    icon: ShoppingBag,
+    icon: RiShoppingBagLine,
     items: [
       {
         title: t("nav.merchant.all_products"),
@@ -87,7 +87,7 @@ const merchantMenuItems = [
   },
   {
     title: t("nav.merchant.orders"),
-    icon: List,
+    icon: RiListUnordered,
     items: [
       { title: t("nav.merchant.all_orders"), url: "/paas/dashboard/orders" },
       {
@@ -106,7 +106,7 @@ const merchantMenuItems = [
   },
   {
     title: t("nav.merchant.restaurant"),
-    icon: Store,
+    icon: RiStore2Line,
     items: [
       {
         title: t("nav.merchant.branches"),
@@ -124,7 +124,7 @@ const merchantMenuItems = [
   },
   {
     title: t("nav.merchant.booking"),
-    icon: Calendar,
+    icon: RiCalendarLine,
     items: [
       {
         title: t("nav.merchant.reservations"),
@@ -138,7 +138,7 @@ const merchantMenuItems = [
   },
   {
     title: t("nav.merchant.business"),
-    icon: Briefcase,
+    icon: RiBriefcaseLine,
     items: [
       {
         title: t("nav.merchant.subscriptions"),
@@ -153,7 +153,7 @@ const merchantMenuItems = [
   },
   {
     title: t("nav.merchant.finance"),
-    icon: DollarSign,
+    icon: RiMoneyDollarCircleLine,
     items: [
       {
         title: t("nav.merchant.wallet"),
@@ -171,7 +171,7 @@ const merchantMenuItems = [
   },
   {
     title: t("nav.merchant.marketing"),
-    icon: Megaphone,
+    icon: RiMegaphoneLine,
     items: [
       {
         title: t("nav.merchant.coupons"),
@@ -185,7 +185,7 @@ const merchantMenuItems = [
   },
   {
     title: t("nav.merchant.content"),
-    icon: Layers,
+    icon: RiStackLine,
     items: [
       {
         title: t("nav.merchant.stories"),
@@ -207,22 +207,22 @@ const merchantMenuItems = [
   },
   {
     title: t("nav.merchant.customers"),
-    icon: Users,
+    icon: RiGroupLine,
     url: "/paas/dashboard/customers",
   },
   {
     title: t("nav.merchant.reports"),
-    icon: BarChart3,
+    icon: RiBarChartBoxLine,
     url: "/paas/dashboard/reports",
   },
   {
     title: t("nav.merchant.pos"),
-    icon: Store, // Or another suitable icon
+    icon: RiStore2Line, // Or another suitable icon
     url: "/paas/dashboard/pos",
   },
   {
     title: t("nav.merchant.settings"),
-    icon: Settings,
+    icon: RiSettings3Line,
     url: "/paas/dashboard/settings",
   },
 ];
@@ -249,7 +249,7 @@ export function MerchantNav() {
                   <SidebarMenuButton tooltip={item.title}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    <RiArrowRightSLine className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
